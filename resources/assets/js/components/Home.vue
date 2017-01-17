@@ -1,18 +1,18 @@
-<template>
-    <div class="container">
-        <!-- <button @click.prevent ="changeMessage()" class="btn btn-primary">Change Message</button> <br><br>
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <div class="panel panel-default">
-                    <div class="panel-heading">Example Component</div>
+<style>
 
-                    <div class="panel-body">
-                        I'm a Home component! {{ message }}
-                    </div>
-                </div>
-            </div>
-        </div>
- -->
+    tr {
+        cursor:pointer;
+    }
+
+    tr:hover {
+        background:#eee;
+    }
+</style>
+
+
+<template>
+    <div>
+       
         <h3>Consultants</h3>
         
 
@@ -27,16 +27,16 @@
                 </tr>
             
             
-                <tr v-for="consultant in consultants">
-                    <td>{{ consultant.Title }}</td>
-                    <td>{{ consultant.First_x0020_Name }}</td>
-                    <td>{{ consultant.Comments }}</td> 
+                <tr v-for="consultant in consultants" @click="goToProfile(consultant.id)">
+                    <td>{{ consultant.last }}</router-link></td>
+                    <td>{{ consultant.first }}</td>
+                    <td>{{ consultant.comments }}</td> 
                     <td>
-                        <span v-if="consultant.SAP">
-                        <span v-for="(sap, index) in consultant.SAP.results">{{ sap }}
-                            <span v-if="index < (consultant.SAP.results.length - 1)">, </span>
+                        
+                        <span v-for="(sap, index) in consultant.sap">{{ sap }}
+                            <span v-if="index < (consultant.sap.length - 1)">, </span>
                         </span>
-                        </span>
+                        
                     </td>
                 
                 </tr>
@@ -64,8 +64,11 @@
         }, 
 
         methods: {
-            changeMessage() {
-                this.$store.dispatch('changeMessage', 'New Message!')
+            goToProfile(id) {
+
+                this.$store.state.currentConsultant = {}
+
+                this.$router.push({name:'consultantView', params: {id:id} });
             }
         }
     }

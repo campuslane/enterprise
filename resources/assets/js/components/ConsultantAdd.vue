@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div>
 
         <h1>Add a Consultant</h1>
 
@@ -21,6 +21,27 @@
             <div class="form-group">
                 <label for="first">Comments</label>
                 <textarea name="comments" class="form-control" v-model="consultant.comments"></textarea>
+            </div>
+
+             <div class="form-group">
+                <label for="first">SAP</label>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" v-model="consultant.sap" id="co" value="CO"> CO   
+                    </label>
+                </div>
+
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" v-model="consultant.sap" id="fi" value="FI"> FI   
+                    </label>
+                </div>
+
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" v-model="consultant.sap" id="abap" value="ABAP"> ABAP   
+                    </label>
+                </div>
             </div>
 
             <div class="form-group">
@@ -59,7 +80,8 @@
                 consultant: { 
                     last: "", 
                     first: "", 
-                    comments: ""
+                    comments: "", 
+                    sap: []
                 }
             }
         }
