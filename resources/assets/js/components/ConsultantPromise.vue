@@ -1,7 +1,7 @@
 <template>
     <div v-if="consultant.last">
 
-        <h1>Resume Upload</h1>
+        <h1>Resume Promise</h1>
 
         <p>Use this form to upload a resume for {{ consultant.first }} {{ consultant .last }}</p>
        
@@ -50,6 +50,50 @@
                 //var serverUrl = _spPageContextInfo.webAbsoluteUrl;
                 var serverUrl = '';
 
+                ////////////////
+                
+
+               this.getFileBuffer(fileInput)
+                    .then(this.addFileToFolder)
+                    .then(this.getListItem)
+                    .then(this.updateListItem)
+                    .then(this.updateConsultantResumeLink)
+
+
+
+                
+
+                return false;
+
+               //  p.then(function(num) { 
+               //      return new Promise(function(resolve, reject){
+               //          setTimeout(
+               //              function() { 
+               //                  resolve(num *2); 
+               //              }, 
+               //          1000);
+               //      });
+               //  })
+
+               // .then(function(num) { 
+               //      return new Promise(function(resolve, reject){
+               //          setTimeout(
+               //              function() { 
+               //                  resolve(num *200); 
+               //              }, 
+               //          1000);
+               //      }); 
+               //  })
+
+               // .then(function(num){
+               //      alert(num)
+               // })
+               
+
+               //  return false;
+
+                ///////////////
+
                 // Initiate method calls using jQuery promises.
                 // Get the local file as an array buffer.
                 var getFile = getFileBuffer();
@@ -91,6 +135,8 @@
                     addFile.fail(self.onError);
                 });
                 getFile.fail(self.onError);
+
+
 
                 // Get the local file as an array buffer.
                 function getFileBuffer() {
@@ -174,7 +220,38 @@
 
             onError(error) {
                 alert(error.responseText);
+            }, 
+
+            
+
+            tester(resolve, reject) {
+                resolve('Yes Resolved');
+            }, 
+
+            getFileBuffer(fileInput) {
+
+                return new Promise(function(resolve, reject){
+
+                    var reader = new FileReader();
+
+                    reader.readAsArrayBuffer(fileInput[0].files[0]);
+
+                    reader.onloadend = function (e) {
+                        resolve(e.target.result);
+                    }
+                    reader.onError = function (e) {
+                        reject(e.target.error);
+                    }
+
+                });
+            },
+
+            addFileToFolder(arrayBuffer) {
+                console.log('yes!');
+                console.log(arrayBuffer);
             }
+
+            
         }
 
         

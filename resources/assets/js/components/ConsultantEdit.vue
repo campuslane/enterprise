@@ -2,7 +2,8 @@
     <div v-if="consultant.last">
 
         <a href="#" @click.prevent="viewConsultant(consultant.id)" >View</a> | Edit | 
-        <a href="#" @click.prevent="uploadResume(consultant.id)" >Upload Resume</a>
+        <a href="#" @click.prevent="uploadResume(consultant.id)" >Upload Resume</a> | 
+        <a href="#" @click.prevent="uploadPromise(consultant.id)" >Upload Promise</a> | 
         <br><br>
 
         <form @submit.prevent="formSubmit()">
@@ -79,6 +80,10 @@
 
             uploadResume(id) {
                 this.$router.push({'name': 'consultantResume', 'params': {id:id}})
+            }, 
+
+            uploadPromise(id) {
+                this.$router.push({'name': 'consultantPromise', 'params': {id:id}})
             }, 
 
             deleteConsultant(id) {

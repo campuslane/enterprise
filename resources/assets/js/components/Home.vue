@@ -14,6 +14,8 @@
     <div>
        
         <h3>Consultants</h3>
+
+        <button @click.prevent ="addTemplate()" class="btn btn-default">Add Template</button>
         
 
             <table class="table table-bordered table-condensed">
@@ -69,6 +71,10 @@
                 this.$store.state.currentConsultant = {}
 
                 this.$router.push({name:'consultantView', params: {id:id} });
+            }, 
+
+            addTemplate() {
+                $('#consultantsApp').before('<script type="x-template" id="custom-template"><div><h1>Custom Template</h1><p>Frank rocks!</p></div><\/script>');
             }
         }
     }
