@@ -9,12 +9,12 @@
 
             <div class="form-group">
                 <label for="first">First Name</label>
-                <input type="text" name="last" class="form-control" v-model="consultant.first">
+                <input type="text" name="last" class="form-control" v-model="consultant.first_name">
             </div>
 
             <div class="form-group">
                 <label for="last">Last Name</label>
-                <input name="last" type="text" class="form-control" v-model="consultant.last">
+                <input name="last" type="text" class="form-control" v-model="consultant.last_name">
             </div>
 
 

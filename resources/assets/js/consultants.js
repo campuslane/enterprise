@@ -14,7 +14,7 @@
 
 		methods: {
 
-			formatConsultants(store, consultants) {
+			formatConsultants(consultants) {
 				var fields = store.fields;
 				var formattedConsultants = [];
 				var newConsultant;
@@ -22,7 +22,7 @@
 				var self = this
 
 				$.each(consultants, function(index, consultant){
-
+					
 					formattedConsultants.push(self.formatConsultant(consultant));
 
 				});
@@ -34,13 +34,50 @@
 
 				var formattedConsultant = {};
 
-				formattedConsultant.id = consultant.ID;
-				formattedConsultant.last = consultant.Title;
-				formattedConsultant.first = consultant.First_x0020_Name;
-				formattedConsultant.comments = consultant.Comments;
-				formattedConsultant.sap = (consultant.SAP) ? consultant.SAP.results : [];
+				formattedConsultant.id = helpers.format(consultant, ['id', 'ID', 'Id'])
+				formattedConsultant.first = helpers.format(consultant, ['first', 'First_x0020_Name', 'first_name'])
+				formattedConsultant.last = helpers.format(consultant, ['last', 'Title', 'last_name'])
+				formattedConsultant.comments = helpers.format(consultant, ['comments', 'Comments'])
+				formattedConsultant.sap = helpers.format(consultant, ['sap', 'SAP'])
 
+				
 				return formattedConsultant;
+			}, 
+
+			format(consultant, names) {
+
+				var output = '';
+
+
+
+				$.each(names, function(index, name){
+
+					if(typeof consultant[name] !== "undefined") {
+
+						if(name == 'SAP') {
+
+							if(typeof consultant.SAP !== "undefined" && consultant.SAP) {
+								console.log(consultant.SAP);
+								output = consultant.SAP.results
+							} else {
+								output = [];
+							}
+
+						} else if (name == 'sap') {
+
+							if( consultant.sap !== "undefined") {
+								output = consultant.sap;
+							}
+
+						} else {
+							output = consultant[name];
+						}
+
+						return false;
+					}
+				});
+
+				return output;
 			}
 		}
 
@@ -59,6 +96,7 @@
 	    	last: '', 
 	    	comments: '', 
 	    	sap: []
+	    	
 	    }
 	  },
 
@@ -69,11 +107,11 @@
 	    }, 
 
 	    loadConsultants (state, consultants) {
-	    	
 	    	state.consultants = consultants;
 	    }, 
 
 	    addConsultant (state, consultant) {
+	    	consultant = helpers.formatConsultant(consultant);
 	    	state.consultants.push(consultant);
 	    }, 
 
@@ -119,7 +157,7 @@
 
 	          		console.log(consultants);
 
-	          		consultants = helpers.formatConsultants(store,consultants);
+	          		consultants = helpers.formatConsultants(consultants);
 	          
 	          		context.commit('loadConsultants', consultants);
 	       });
@@ -136,8 +174,8 @@
 
 	        var body = {
 	          '__metadata': { 'type': itemType }, 
-	          'Title': consultant.last, 
-	          'First_x0020_Name': consultant.first, 
+	          'Title': consultant.last_name, 
+	          'First_x0020_Name': consultant.first_name, 
 	          'Comments': consultant.comments, 
 	          'SAP':  {"results": consultant.sap }
 	        }
@@ -184,8 +222,8 @@
 
             var body = {
                  '__metadata': { 'type': itemType }, 
-                 'Title': consultant.last, 
-                 'First_x0020_Name': consultant.first, 
+                 'Title': consultant.last_name, 
+                 'First_x0020_Name': consultant.first_name, 
                  'Comments': consultant.comments, 
                  'SAP':  {"results": consultant.sap }
             }
@@ -240,6 +278,8 @@
 
 	          		consultant = helpers.formatConsultant(consultant);
 
+	          		console.log(consultant);
+
 	          		context.commit('getConsultant', consultant);
 
 	       });
@@ -258,10 +298,14 @@
 	const ConsultantEdit = require('./components/ConsultantEdit.vue')
 	const ConsultantResume = require('./components/ConsultantResume.vue')
 	const ConsultantPromise = require('./components/ConsultantPromise.vue')
+	const Import = require('./components/Import.vue')
+	const Delete = require('./components/Delete.vue')
 
 	const routes = [
 	  { path: '/', name: 'home', component: Home },
 	  { path: '/about', name: 'about', component: About },
+	  { path: '/import', name: 'import', component: Import },
+	  { path: '/delete', name: 'delete', component: Delete },
 	  { path: '/add', name: 'consulantAdd', component: ConsultantAdd },
 	  { path: '/view/:id', name: 'consultantView', component: ConsultantView },
 	  { path: '/edit/:id', name: 'consultantEdit', component: ConsultantEdit },

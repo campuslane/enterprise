@@ -15,7 +15,7 @@
        
         <h3>Consultants</h3>
 
-        <button @click.prevent ="addTemplate()" class="btn btn-default">Add Template</button>
+      
         
 
             <table class="table table-bordered table-condensed">
@@ -24,7 +24,7 @@
                 <tr>
                     <th>Last Name</th>
                     <th>First Name</th>
-                    <th>Comments</th>
+                    
                     <th>SAP</th>
                 </tr>
             
@@ -32,7 +32,7 @@
                 <tr v-for="consultant in consultants" @click="goToProfile(consultant.id)">
                     <td>{{ consultant.last }}</router-link></td>
                     <td>{{ consultant.first }}</td>
-                    <td>{{ consultant.comments }}</td> 
+                  
                     <td>
                         
                         <span v-for="(sap, index) in consultant.sap">{{ sap }}

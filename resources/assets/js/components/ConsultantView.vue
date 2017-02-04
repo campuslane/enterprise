@@ -1,7 +1,9 @@
 <template>
+
+    {{consultant}}
     <div  v-if="consultant.last">
 
-        View | <a href="#" @click.prevent="editConsultant(consultant.id)" >Edit</a>
+        <i class="fa fa-pencil"></i> <a href="#" @click.prevent="editConsultant(consultant.id)" >Edit</a>
 
         <h1>{{ consultant.first }} {{ consultant.last }}</h1>
 
@@ -19,6 +21,8 @@
 <script>
     export default {
         mounted() {
+
+            
             
             this.$store.dispatch('getConsultant', this.$route.params.id);
 
