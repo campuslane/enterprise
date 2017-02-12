@@ -32,6 +32,8 @@
 
 			formatConsultant(consultant) {
 
+				console.log(consultant);
+
 				var formattedConsultant = {};
 
 				formattedConsultant.id = helpers.format(consultant, ['id', 'ID', 'Id'])
@@ -39,6 +41,7 @@
 				formattedConsultant.last = helpers.format(consultant, ['last', 'Title', 'last_name'])
 				formattedConsultant.comments = helpers.format(consultant, ['comments', 'Comments'])
 				formattedConsultant.sap = helpers.format(consultant, ['sap', 'SAP'])
+				formattedConsultant.address = helpers.format(consultant, ['address', 'Address'])
 
 				
 				return formattedConsultant;
@@ -57,7 +60,7 @@
 						if(name == 'SAP') {
 
 							if(typeof consultant.SAP !== "undefined" && consultant.SAP) {
-								console.log(consultant.SAP);
+								
 								output = consultant.SAP.results
 							} else {
 								output = [];
@@ -90,7 +93,8 @@
 
 	  state: {
 	    message: "Our Initial Message!", 
-	    consultants: [], 
+	    consultants: [],
+	    searchedConsultants: [],  
 	    currentConsultant: {
 	    	first: '', 
 	    	last: '', 
@@ -139,13 +143,17 @@
 	  	  context.commit('changeMessage', message)
 	  	}, 
 
-	  	loadConsultants(context) {
+	  	importConsultants(context, consultants) {
+	  		
+	  		consultants = helpers.formatConsultants(consultants);
+	        context.commit('loadConsultants', consultants);
+	  	}, 
 
-	  		console.log('loading consultants');
+	  	loadConsultants(context) {
 
 	  		var listName = 'Consult';
 	        var itemType = 'SP.Data.ConsultListItem';
-	        var listUrl = "/_api/web/lists/GetByTitle('" + listName + "')/items";
+	        var listUrl = "/_api/web/lists/GetByTitle('" + listName + "')/items?$orderby=Title&$top=1000";
 
 	        var headers = {
 	          "Accept": "application/json; odata=verbose", 
@@ -154,8 +162,6 @@
 	        return Vue.http.get(listUrl, {headers: headers}).then((response) => {
 
 	          		var consultants = response.data.d.results;
-
-	          		console.log(consultants);
 
 	          		consultants = helpers.formatConsultants(consultants);
 	          
@@ -169,7 +175,8 @@
 	        var itemType = 'SP.Data.ConsultantsListItem';
 	        var listUrl = "/_api/web/lists/GetByTitle('" + listName + "')/items";
 
-	        console.log(consultant.sap);
+	        
+
 
 
 	        var body = {
@@ -177,7 +184,8 @@
 	          'Title': consultant.last_name, 
 	          'First_x0020_Name': consultant.first_name, 
 	          'Comments': consultant.comments, 
-	          'SAP':  {"results": consultant.sap }
+	          'SAP':  {"results": consultant.sap }, 
+	          'Address': consultant.address
 	        }
 
 	        var options = {

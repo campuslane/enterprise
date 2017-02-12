@@ -7,6 +7,11 @@
        
         <input id="getFile" class="form-control" type="file"/><br />
         <input id="displayName" class="form-control" type="text" placeholder="Enter a unique name" /><br />
+        <select name="resumeType" id="resumeType" class="form-control">
+            <option value="Reformatted">Reformatted</option>
+            <option value="Unreformatted">Unreformatted</option>
+        </select>
+        <br><br>
         <button id="addFileButton" @click.prevent="uploadFile()" type="submit" class="btn btn-primary">Upload</button>
        
     </div>
@@ -41,9 +46,17 @@
                     .then(this.addFileToFolder)
                     .then(this.getListItem)
                     .then(this.updateListItem)
-                    .then(function(listItem){console.log(listItem)});
+                    .then(function(listItem){
+
+                        console.log(listItem.d);
+                        
+                        var resumeLink = listItem.d.ServerRedirectedEmbedUrl;
+
+                    });
 
                     // next steps would be to update the resume link
+                    // get the list item
+                    //
 
                 return false;
             }, 
@@ -142,6 +155,7 @@
                         }, 
 
                         success: function(response) {
+                            listItem.d.resumeType = $('#resumeType').val();
                             resolve(listItem);
                         }
                     })
